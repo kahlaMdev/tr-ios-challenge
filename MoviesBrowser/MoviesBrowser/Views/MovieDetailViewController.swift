@@ -27,7 +27,7 @@ class MovieDetailViewController: UIViewController {
     private var moviesDetailViewModel:MovieDetailModelView?
     
     public func setMovie(_ aMovie: Movie) {
-        self.moviesDetailViewModel = MovieDetailModelView(aMovie: aMovie)
+        self.moviesDetailViewModel = MovieDetailModelView(aMovie: aMovie, labrairyAPI: LibraryAPI.shared)
     }
     
     override func viewDidLoad() {

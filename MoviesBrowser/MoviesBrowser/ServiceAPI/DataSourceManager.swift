@@ -8,13 +8,27 @@
 import Foundation
 import UIKit
 
+protocol DataMovieSourceManagerProtocol {
+    init(sharedCoreDataHelper:CoreDataMovieServiceProtocol)
+    func parseMovieList(data: Data?) -> DataProcessingState
+    func parseMovieDetails(data: Data?) -> DataProcessingState
+    func parseMovieRecommended(data: Data?, movieId: Int16) -> DataProcessingState
+}
+
 enum DataProcessingState {
     case fail
     case success
 }
 
 // A Singleton class to manage data
-final class DataSourceManager {
+final class DataSourceManager: DataMovieSourceManagerProtocol {
+    
+    private let coreDataHelper:CoreDataMovieServiceProtocol
+    
+    // Depency Injection: constructor Injection
+    init(sharedCoreDataHelper:CoreDataMovieServiceProtocol) {
+        self.coreDataHelper = sharedCoreDataHelper
+    }
     
     func parseMovieList(data: Data?) -> DataProcessingState {
         
@@ -23,7 +37,7 @@ final class DataSourceManager {
                 let decoder = JSONDecoder()
                 let moviesList = try decoder.decode(MoviesList.self, from: jsonData)
                 
-                CoreDataMoviesHelper.shared.updateDataBaseWithMoviesList(movies: moviesList)
+                self.coreDataHelper.updateDataBaseWithMoviesList(movies: moviesList)
                 
                 return .success
                 
@@ -43,7 +57,7 @@ final class DataSourceManager {
                 let decoder = JSONDecoder()
                 let movieDetail = try decoder.decode(MovieDetail.self, from: jsonData)
                 
-                CoreDataMoviesHelper.shared.updateDataBaseWithMovieDetail(movieDetail: movieDetail)
+                self.coreDataHelper.updateDataBaseWithMovieDetail(movieDetail: movieDetail)
                 
                 return .success
                 
@@ -63,7 +77,7 @@ final class DataSourceManager {
                 let decoder = JSONDecoder()
                 let recommendedMovies = try decoder.decode(MoviesList.self, from: jsonData)
                 
-                CoreDataMoviesHelper.shared.updateMovie(id: movieId, recommendedMovies: recommendedMovies)
+                self.coreDataHelper.updateMovie(id: movieId, recommendedMovies: recommendedMovies)
                 
                 return .success
                 

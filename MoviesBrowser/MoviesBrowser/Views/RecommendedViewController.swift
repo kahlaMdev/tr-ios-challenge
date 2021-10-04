@@ -25,7 +25,7 @@ class RecommendedViewController: UIViewController
     private var recommendedViewModel: RecommendedViewModel?
     
     public func setMovie(_ aMovie: Movie) {
-        self.recommendedViewModel = RecommendedViewModel(aMovie: aMovie)
+        self.recommendedViewModel = RecommendedViewModel(aMovie: aMovie, labrairyAPI: LibraryAPI.shared)
     }
 
     override func viewDidLoad() {

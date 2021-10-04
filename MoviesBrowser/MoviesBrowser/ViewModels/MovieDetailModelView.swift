@@ -10,14 +10,17 @@ import Foundation
 class MovieDetailModelView {
     
     let movie: Box<Movie>
+    private let labrairyAPI : APIServiceProtocol // For DI
     
-    init(aMovie: Movie) {
+    // Depency Injection: constructor/Interface Injection
+    init(aMovie: Movie, labrairyAPI : APIServiceProtocol) {
         self.movie = Box(aMovie)
+        self.labrairyAPI = labrairyAPI
     }
 
     public func getMovieDetail() {
             
-        LibraryAPI.shared.downloadMovieDetails(forId:self.movie.value.identifier, completionHandler: { [weak self] (movie: Movie?, error: DownloadError) in
+        labrairyAPI.downloadMovieDetails(forId:self.movie.value.identifier, completionHandler: { [weak self] (movie: Movie?, error: DownloadError) in
             
             guard let self = self else { return }
             if error != .noError {

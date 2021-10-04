@@ -9,13 +9,16 @@ import Foundation
 
 public class MovieListViewModel {
     let movies: Box<[Movie]> = Box([Movie]())
+    private let labrairyAPI : APIServiceProtocol // For DI
 
-//    init() {
-//        
-//    }
+    // Depency Injection: constructor/Interface Injection
+    init(labrairyAPI : APIServiceProtocol) {
+        self.labrairyAPI = labrairyAPI
+    }
     
-    public func getMoviesList(){
-        LibraryAPI.shared.downloadMoviesList { [weak self] (movies: [Movie], error: DownloadError) in
+    public func getMoviesList() {
+        
+        labrairyAPI.downloadMoviesList { [weak self] (movies: [Movie], error: DownloadError) in
             
             guard let self = self else { return }
             if error != .noError {
@@ -25,6 +28,12 @@ public class MovieListViewModel {
             }
             
             self.movies.value = movies
+        }
+    }
+    
+    public func getStoredMovies(){
+        if let MyMovies = CoreDataMoviesHelper.shared.fetchMoviesFromStorage() {
+            self.movies.value = MyMovies
         }
     }
 }

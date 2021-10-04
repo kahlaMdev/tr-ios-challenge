@@ -9,11 +9,11 @@ import Foundation
 
 // MARK: - Decodable Movie Structs based on json 
 
-struct MoviesList: Decodable {
+public struct MoviesList: Decodable {
     let movies: [MovieModel]
 }
 
-struct MovieDetail: Decodable {
+public struct MovieDetail: Decodable {
     let identifier: Int16
     let name: String
     let descript: String
@@ -33,7 +33,7 @@ struct MovieDetail: Decodable {
     }
 }
 
-struct MovieModel: Decodable {
+public struct MovieModel: Decodable {
     let identifier: Int16
     let name: String
     let thumbnail: String

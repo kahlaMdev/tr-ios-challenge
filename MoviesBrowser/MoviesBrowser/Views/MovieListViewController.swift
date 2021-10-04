@@ -16,10 +16,24 @@ class MovieListViewController: UIViewController,
 
     @IBOutlet weak var moviesTableView: UITableView!
     
+    // View Model
+    private let moviesListViewModel = MovieListViewModel(labrairyAPI: LibraryAPI.shared)
     private var movies = [Movie]()
     
-    // View Model
-    private let moviesListViewModel = MovieListViewModel()
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?)   {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        self.initializor()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.initializor()
+    }
+    
+    private func initializor(){
+        //1- This will guaranty that the last downloaded data will be be displayed
+        self.moviesListViewModel.getStoredMovies()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +54,7 @@ class MovieListViewController: UIViewController,
             }
         }
         
+        //2- Lets do a new reuest to get the last up to date Data from API! 
         self.moviesListViewModel.getMoviesList()
     }
     

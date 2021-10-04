@@ -8,8 +8,23 @@
 import Foundation
 import CoreData
 
+// For DI
+public protocol CoreDataMovieServiceProtocol {
+    
+    func saveContext ()
+    
+    func getMoviesCount() -> Int
+    func deleteAllMovies()
+    func fetchMoviesFromStorage() -> [Movie]?
+    func fetchMovieFromStorage(id: Int16) -> Movie?
+    func updateDataBaseWithMoviesList(movies: MoviesList)
+    func updateDataBaseWithMovieModel(movie: MovieModel)
+    func updateDataBaseWithMovieDetail(movieDetail: MovieDetail)
+    func updateMovie(id: Int16, recommendedMovies:MoviesList)
+}
+
 // Singleton
-final class CoreDataMoviesHelper {
+final class CoreDataMoviesHelper: CoreDataMovieServiceProtocol {
     
     static let shared = CoreDataMoviesHelper()
     private init() {
@@ -147,8 +162,10 @@ final class CoreDataMoviesHelper {
         }
     }
     
-    public func updateDataBaseWithMovieModel(movie: MovieModel){
-        DispatchQueue.main.async {
+    public func updateDataBaseWithMovieModel(movie: MovieModel) {
+        
+        // Very Important to be SYNC as we want to be sure the CoreData has been update "before" returning Success!
+        DispatchQueue.main.sync {
             let identifier = movie.identifier
             
             if let myMovie = self.fetchMovieFromStorage(id: identifier) {
@@ -170,7 +187,8 @@ final class CoreDataMoviesHelper {
     
     public func updateDataBaseWithMovieDetail(movieDetail: MovieDetail) {
         
-        DispatchQueue.main.async {
+        // Very Important to be SYNC as we want to be sure the CoreData has been update "before" returning Success!
+        DispatchQueue.main.sync {
             let identifier = movieDetail.identifier
             
             if let myMovie = self.fetchMovieFromStorage(id: identifier) {
@@ -192,7 +210,8 @@ final class CoreDataMoviesHelper {
     
     public func updateMovie(id: Int16, recommendedMovies:MoviesList) {
         
-        DispatchQueue.main.async {
+        // Very Important to be SYNC as we want to be sure the CoreData has been update "before" returning Success!
+        DispatchQueue.main.sync {
             if let movie = CoreDataMoviesHelper.shared.fetchMovieFromStorage(id: id) {
                 //1- remove (empty) any previous recommanded Movies relationship
                 movie.removeFromRecommendedMovies(movie.recommendedMovies)
