@@ -8,25 +8,9 @@
 import Foundation
 import CoreData
 
-// For DI
-public protocol CoreDataMovieServiceProtocol {
-    
-    func saveContext ()
-    
-    func getMoviesCount() -> Int
-    func deleteAllMovies()
-    func fetchMoviesFromStorage() -> [Movie]?
-    func fetchMovieFromStorage(id: Int16) -> Movie?
-    func fetchMoviesFromStorage(forIds: [Int16]) -> [Movie]
-    func updateDataBaseWithMoviesList(movies: MoviesList)
-    func updateDataBaseWithMovieModel(movie: MovieModel)
-    func updateDataBaseWithMovieDetail(movieDetail: MovieDetail)
-    func updateMovie(id: Int16, recommendedMovies:MoviesList)
-}
-
 // Singleton
 final class CoreDataMoviesHelper: CoreDataMovieServiceProtocol {
-    
+   
     static let shared = CoreDataMoviesHelper()
     private init() {
         
@@ -113,7 +97,7 @@ final class CoreDataMoviesHelper: CoreDataMovieServiceProtocol {
         }
     }
     
-    public func fetchMoviesFromStorage() -> [Movie]? {
+    public func fetchMoviesFromStorage() -> [MovieProtocol]? {
         let managedObjectContext = persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<Movie>(entityName: Movie.entityName)
         let sortDescriptor1 = NSSortDescriptor(key: "identifier", ascending: true)
@@ -128,7 +112,7 @@ final class CoreDataMoviesHelper: CoreDataMovieServiceProtocol {
         }
     }
     
-    public func fetchMovieFromStorage(id: Int16) -> Movie? {
+    public func fetchMovieFromStorage(id: Int16) -> MovieProtocol? {
         let managedObjectContext = persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<Movie>(entityName: Movie.entityName)
         fetchRequest.predicate = NSPredicate(format: "identifier = %@",
@@ -143,13 +127,13 @@ final class CoreDataMoviesHelper: CoreDataMovieServiceProtocol {
         }
     }
     
-    public func fetchMoviesFromStorage(forIds: [Int16]) -> [Movie] {
+    public func fetchMoviesFromStorage(forIds: [Int16]) -> [MovieProtocol] {
         
         var movies = [Movie]()
         for movieId in forIds {
             
             if let recommendedMovie = CoreDataMoviesHelper.shared.fetchMovieFromStorage(id: movieId) {
-                movies.append(recommendedMovie)
+                movies.append(recommendedMovie as! Movie)
             }
         }
         
@@ -184,7 +168,7 @@ final class CoreDataMoviesHelper: CoreDataMovieServiceProtocol {
             
             if let myMovie = self.fetchMovieFromStorage(id: identifier) {
                 // update
-                self.updateMovie(movie: myMovie, fromMovieModel: movie)
+                self.updateMovie(movie: myMovie as! Movie, fromMovieModel: movie)
                 
             }else {
                 //Insert + update
@@ -207,7 +191,7 @@ final class CoreDataMoviesHelper: CoreDataMovieServiceProtocol {
             
             if let myMovie = self.fetchMovieFromStorage(id: identifier) {
                 // update
-                self.updateMovie(movie: myMovie, fromMovieDetail: movieDetail)
+                self.updateMovie(movie: myMovie as! Movie, fromMovieDetail: movieDetail)
                 
             }else {
                 //Insert + update
@@ -226,7 +210,7 @@ final class CoreDataMoviesHelper: CoreDataMovieServiceProtocol {
         
         // Very Important to be SYNC as we want to be sure the CoreData has been update "before" returning Success!
         DispatchQueue.main.sync {
-            if let movie = CoreDataMoviesHelper.shared.fetchMovieFromStorage(id: id) {
+            if let movie = CoreDataMoviesHelper.shared.fetchMovieFromStorage(id: id) as? Movie {
                 //1- remove (empty) any previous recommanded Movies
                 movie.recommendedIDs?.removeAll()
 //               // 2- add received recommanded movies
