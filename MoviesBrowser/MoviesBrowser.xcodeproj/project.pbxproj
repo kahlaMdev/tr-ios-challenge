@@ -49,6 +49,7 @@
 		45AE7660270C8E680076B2BA /* MovieListModelViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AE765F270C8E680076B2BA /* MovieListModelViewTest.swift */; };
 		45AE7668270C992B0076B2BA /* MovieDataTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AE7667270C992B0076B2BA /* MovieDataTest.swift */; };
 		45AE766E270C9A9A0076B2BA /* detailsMovieExample-1.json in Resources */ = {isa = PBXBuildFile; fileRef = 45AE766D270C9A9A0076B2BA /* detailsMovieExample-1.json */; };
+		45AE767C270CB7A20076B2BA /* Readme.md in Resources */ = {isa = PBXBuildFile; fileRef = 45AE767B270CB7A20076B2BA /* Readme.md */; };
 		45EC3127270B826D00B3C497 /* MovieDetailsModelViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EC3126270B826D00B3C497 /* MovieDetailsModelViewTest.swift */; };
 		45EC312C270B832F00B3C497 /* MocApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EC312B270B832F00B3C497 /* MocApiService.swift */; };
 		45EC3152270B871E00B3C497 /* APIServiceProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EC3151270B871E00B3C497 /* APIServiceProtocols.swift */; };
@@ -121,6 +122,7 @@
 		45AE765F270C8E680076B2BA /* MovieListModelViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListModelViewTest.swift; sourceTree = "<group>"; };
 		45AE7667270C992B0076B2BA /* MovieDataTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDataTest.swift; sourceTree = "<group>"; };
 		45AE766D270C9A9A0076B2BA /* detailsMovieExample-1.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "detailsMovieExample-1.json"; sourceTree = "<group>"; };
+		45AE767B270CB7A20076B2BA /* Readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = Readme.md; path = ../../Readme.md; sourceTree = "<group>"; };
 		45EC3126270B826D00B3C497 /* MovieDetailsModelViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsModelViewTest.swift; sourceTree = "<group>"; };
 		45EC312B270B832F00B3C497 /* MocApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MocApiService.swift; sourceTree = "<group>"; };
 		45EC3151270B871E00B3C497 /* APIServiceProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIServiceProtocols.swift; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 		459593DC27091C3A00DD0E06 /* MoviesBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				45AE767B270CB7A20076B2BA /* Readme.md */,
 				45959414270922E700DD0E06 /* CONSTANTS.swift */,
 				459593DD27091C3A00DD0E06 /* AppDelegate.swift */,
 				459593DF27091C3A00DD0E06 /* SceneDelegate.swift */,
@@ -461,6 +464,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45AE767C270CB7A20076B2BA /* Readme.md in Resources */,
 				4595944427092A3500DD0E06 /* readme.rtf in Resources */,
 				459593ED27091C3D00DD0E06 /* LaunchScreen.storyboard in Resources */,
 				459594252709245400DD0E06 /* specs.pdf in Resources */,

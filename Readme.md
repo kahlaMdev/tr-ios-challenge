@@ -45,3 +45,49 @@ Required:
 Nice to have (not required):
 - Unit Tests
 - Caching
+
+# Developement and Design
+- Used xCode 12.4 
+- Swift 5
+
+- Architecture: MVVM swift POP (protocol oriented programming)
+- Dependency Injection 
+- Design
+    1.    Main View = UINavigation controller --> Root View Controller is UIViewController with a UITableView of Movies List Cells 
+    2.    Movie Details View controller: UIViewController with 2 child controllers
+    a.    Child 1 : UIViewController with UIScrollView with movie details
+    b.    Child 2: UICollection View of "Recommended Movies"
+    3.    Network datasource downloader
+    4.    Used Core Data to save/cache movies datas. 
+    5.    View Models Class uses data Box Binding (Box Class) to bind data in View Controllers 
+    6.    Models data are saved in Movie class as an NSManagedObject in Core Data
+    7.    Implemented error checking for Network and data parsing 
+    8.    Testing for Movie Data and Model Views classes. 
+    9.    The HTTPClient uses cachePolicy: .reloadRevalidatingCacheData
+    10.    LibrairyAPI Class is singleton. A Face pattern for downloading data from server and from Core Data
+    11.    The MovieDetailViewController's View contains a UIScroll View to scroll the movie details. 
+    12.    Core Data methods expect to be run on the same thread. Used the DispatchQueue on the main thread.
+
+- No compiler warning and errors 
+- Run Instruments tool for memory leak detection and performance success 
+- All Unit tests passes
+- Manually Tested the application in iPhone 11's Simulator (iOS Version 14.4)
+- Tested with no Internet connection and display an error message on startup!
+- Tested in Portrait and Landscape mode 
+
+What can be done farther? 
+
+# Optimization
+- Handle very big movie list by only requesting the first chunk like 30 movies at a time. When the tableView scrolls up to the bottom we fetch the next chunk and so on. 
+This will speed the display for very big data list to display as they are only fetched on demand
+- 
+- Display a visual indicator (like an activity indicator View or an animated Text) while the app is downloading data so to inform the user and the overall UX experience is better.  
+- Adding more tests (Edge case like very big data lists and unsupported Images (format or size)) 
+- Supporting Dynamic Font Sizing
+- Supporting deleting from the list 
+- Supporting rating display and Vote. 
+- Supporting Movie search (Core Data might be a good help for This using relation ships and predicates)
+- Text Localization
+- Supporting dark mode
+- icons and starting Splashs are easy to add in asset catalog 
+- Handle memory/storage warning (Limited resources) 
