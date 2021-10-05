@@ -11,21 +11,21 @@ class RecommendedViewModel {
     
     let recommendedMovies: Box<[MovieProtocol]> = Box([MovieProtocol]())
     let movie: Box<MovieProtocol>
-    private let labrairyAPI : APIServiceProtocol // For DI
+    private let librairyAPI : APIServiceProtocol // For DI
     
     // Depency Injection: constructor/Interface Injection
-    init(aMovie: MovieProtocol, labrairyAPI : APIServiceProtocol) {
+    init(aMovie: MovieProtocol, librairyAPI : APIServiceProtocol) {
         self.movie = Box(aMovie)
-        self.labrairyAPI = labrairyAPI
+        self.librairyAPI = librairyAPI
     }
     
     public func getStoredRecommended() -> [MovieProtocol] {
-        return labrairyAPI.getFromStorageRecommendedMovies(forId: self.movie.value.identifier)
+        return librairyAPI.getFromStorageRecommendedMovies(forId: self.movie.value.identifier)
     }
     
     public func getRecommended(){
         
-        labrairyAPI.downloadRecommendedMovies(forId:self.movie.value.identifier, completionHandler: { [weak self] (movies: [MovieProtocol], error: DownloadError) in
+        librairyAPI.downloadRecommendedMovies(forId:self.movie.value.identifier, completionHandler: { [weak self] (movies: [MovieProtocol], error: DownloadError) in
             
             guard let self = self else { return }
             if error != .noError {

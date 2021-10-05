@@ -100,6 +100,15 @@ public final class LibraryAPI: APIServiceProtocol {
         
         return []
     }
- 
+    
+    public func getMoviesFromStorage() -> [MovieProtocol] {
+        if let MyMovies = CoreDataMoviesHelper.shared.fetchMoviesFromStorage() {
+            
+            return MyMovies
+        }else {
+            return [MovieProtocol]()
+        }
+    }
+
 }
 

@@ -10,16 +10,16 @@ import Foundation
 public class MovieListViewModel {
     let movies: Box<[MovieProtocol]> = Box([MovieProtocol]())
     let error: Box<String?> = Box(nil)
-    private let labrairyAPI : APIServiceProtocol // For DI
+    private let librairyAPI : APIServiceProtocol // For DI
 
     // Depency Injection: constructor/Interface Injection
-    init(labrairyAPI : APIServiceProtocol) {
-        self.labrairyAPI = labrairyAPI
+    init(librairyAPI : APIServiceProtocol) {
+        self.librairyAPI = librairyAPI
     }
     
     public func getMoviesList() {
         
-        labrairyAPI.downloadMoviesList { [weak self] (movies: [MovieProtocol], error: DownloadError) in
+        librairyAPI.downloadMoviesList { [weak self] (movies: [MovieProtocol], error: DownloadError) in
             
             guard let self = self else { return }
             if error != .noError {
@@ -32,12 +32,8 @@ public class MovieListViewModel {
     
     public func getStoredMovies() ->  [MovieProtocol] {
         
-        if let MyMovies = CoreDataMoviesHelper.shared.fetchMoviesFromStorage() {
-            self.movies.value = MyMovies
-            return MyMovies
-        }else {
-            return [MovieProtocol]()
-        }
+        self.movies.value = librairyAPI.getMoviesFromStorage()
+        return self.movies.value
     }
 }
 

@@ -27,7 +27,12 @@ class MovieDetailViewController: UIViewController {
     private var moviesDetailViewModel:MovieDetailModelView?
     
     public func setMovie(_ aMovie: MovieProtocol) {
-        self.moviesDetailViewModel = MovieDetailModelView(aMovie: aMovie, labrairyAPI: LibraryAPI.shared)
+        self.moviesDetailViewModel = MovieDetailModelView(aMovie: aMovie, librairyAPI: LibraryAPI.shared)
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        self.setImage(pictureImageView.image, screenSize: size)
     }
     
     override func viewDidLoad() {
@@ -70,14 +75,20 @@ class MovieDetailViewController: UIViewController {
 //        self.movieDetailScrolView.scrollToTop(animated: true)
     }
     
-    private func setImage(_ image: UIImage?) {
+    private func setImage(_ image: UIImage?, screenSize:CGSize? = nil) {
         
         pictureImageView.image = image
         
         if let myImage = image {
+            
             let size = myImage.size
-            let imageViewWidth = pictureImageView.frame.size.width
-            imageViewHeigthConstraint.constant = size.height / size.width * imageViewWidth
+            
+            if let screenSize = screenSize {
+                imageViewHeigthConstraint.constant = size.height / size.width * screenSize.width
+            }else {
+                imageViewHeigthConstraint.constant = size.height / size.width * self.view.frame.width
+            }
+            
             view.layoutIfNeeded()
             
         }else {

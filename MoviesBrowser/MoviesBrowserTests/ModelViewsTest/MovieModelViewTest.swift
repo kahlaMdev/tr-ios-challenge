@@ -1,5 +1,5 @@
 //
-//  MovieDetailsModelViewTest.swift
+//  MovieModelViewTest.swift
 //  MoviesBrowserTests
 //
 //  Created by Mohamed Kahla on 2021-10-04.
@@ -10,9 +10,9 @@ import Foundation
 import XCTest
 @testable import MoviesBrowser
 
-class MovieDetailsModelViewTest: XCTestCase {
+
+class MovieModelViewTest: XCTestCase {
     
-    var sut : MovieDetailModelView!
     var mocMovie:MovieMoc!
     var mocApiService:MocApiService!
     
@@ -26,6 +26,15 @@ class MovieDetailsModelViewTest: XCTestCase {
     let rating:Float = 10.0
     let year:Int16 = 2019
     
+    let movie777 = MovieMoc(identifier: 777,
+                            name: "777",
+                            descript: "The begining of the ..",
+                            plot: "When the plot of the time ...",
+                            releaseDateEpochTime: 816998400,
+                            rating: 8.3,
+                            year: 1995,
+                            recommendedMovies: [])
+    
     override func setUp() {
         
         super.setUp()
@@ -36,47 +45,18 @@ class MovieDetailsModelViewTest: XCTestCase {
                             plot: plot,
                             releaseDateEpochTime:dateTimeInterval,
                             rating: 10.0,
-                            year: year)
+                            year: year,
+                            recommendedIDs: [777],
+                            recommendedMovies: [movie777])
         
         mocApiService = MocApiService()
-        mocApiService.movieToMoc = mocMovie
-        
-        sut = MovieDetailModelView(aMovie: mocMovie, labrairyAPI: mocApiService)
-        
-        sut.getMovieDetail()
     }
     
     override func tearDown() {
         
-        sut = nil
         mocMovie = nil
         mocApiService = nil
-        
         super.tearDown()
-        
     }
-    
-    func testMovieId() throws {
-        XCTAssertEqual(sut.movie.value.identifier, iD)
-    }
-    
-    func testMovieName() throws {
-        XCTAssertEqual(sut.movieName.value, movieName)
-    }
-      
-    func testMovieDescription() throws {
-        XCTAssertEqual(sut.description.value, descrip)
-    }
-    
-    func testMoviePlot() throws {
-        XCTAssertEqual(sut.plot.value, plot)
-    }
-    
-    func testMovieReleaseDate() throws {
-        XCTAssertEqual(sut.releaseDate.value, "Release date : 25 of April 2019")
-    }
-    
-    //TODO: testing Image size calculation
-    // 
     
 }

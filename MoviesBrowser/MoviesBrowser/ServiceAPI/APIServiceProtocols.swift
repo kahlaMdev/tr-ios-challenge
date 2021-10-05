@@ -26,6 +26,7 @@ public protocol APIServiceProtocol {
     func downloadMovieDetails(forId: Int16, completionHandler: @escaping (MovieProtocol?, DownloadError) -> ())
     func downloadRecommendedMovies(forId: Int16, completionHandler: @escaping ([MovieProtocol], DownloadError) -> ())
     func getFromStorageRecommendedMovies(forId: Int16) -> [MovieProtocol]
+    func getMoviesFromStorage() -> [MovieProtocol]
 }
 
 protocol DataMovieSourceManagerProtocol {

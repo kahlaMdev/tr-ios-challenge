@@ -9,14 +9,13 @@ import UIKit
 
 class RecommendedViewController: UIViewController
                                  , UICollectionViewDataSource
-                                 , UICollectionViewDelegate
+                                 //, UICollectionViewDelegate
 {
     
     private enum Constants {
         static let RecommendedCellIdentifier = "recommendedCellId"
     }
     
-
     @IBOutlet weak var recommendedCollectionView: UICollectionView!
     
     private var recommendedMovies = [MovieProtocol]()
@@ -25,7 +24,7 @@ class RecommendedViewController: UIViewController
     private var recommendedViewModel: RecommendedViewModel?
     
     public func setMovie(_ aMovie: MovieProtocol) {
-        self.recommendedViewModel = RecommendedViewModel(aMovie: aMovie, labrairyAPI: LibraryAPI.shared)
+        self.recommendedViewModel = RecommendedViewModel(aMovie: aMovie, librairyAPI: LibraryAPI.shared)
     }
 
     override func viewDidLoad() {

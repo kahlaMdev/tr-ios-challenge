@@ -7,7 +7,6 @@
 
 import Foundation
 
-// For DI
 public protocol CoreDataMovieServiceProtocol {
     
     func saveContext ()

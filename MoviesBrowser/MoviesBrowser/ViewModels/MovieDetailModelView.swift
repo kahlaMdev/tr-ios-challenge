@@ -15,12 +15,12 @@ class MovieDetailModelView {
     let description: Box<String?> = Box(nil)
     let plot: Box<String?> = Box(nil)
     
-    private let labrairyAPI : APIServiceProtocol // For DI
+    private let librairyAPI : APIServiceProtocol // For DI
     
     // Depency Injection: constructor/Interface Injection
-    init(aMovie: MovieProtocol, labrairyAPI : APIServiceProtocol) {
+    init(aMovie: MovieProtocol, librairyAPI : APIServiceProtocol) {
         self.movie = Box(aMovie)
-        self.labrairyAPI = labrairyAPI
+        self.librairyAPI = librairyAPI
     }
     
     private func releaseDateFormatted(releaseDateEpochTime : Int64) -> String {
@@ -31,7 +31,7 @@ class MovieDetailModelView {
 
     public func getMovieDetail() {
             
-        labrairyAPI.downloadMovieDetails(forId:self.movie.value.identifier, completionHandler: { [weak self] (movie: MovieProtocol?, error: DownloadError) in
+        librairyAPI.downloadMovieDetails(forId:self.movie.value.identifier, completionHandler: { [weak self] (movie: MovieProtocol?, error: DownloadError) in
             
             guard let self = self else { return }
             if error != .noError {

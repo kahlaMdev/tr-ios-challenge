@@ -17,7 +17,7 @@ class MovieListViewController: UIViewController,
     @IBOutlet weak var moviesTableView: UITableView!
     
     // View Model
-    private let moviesListViewModel = MovieListViewModel(labrairyAPI: LibraryAPI.shared)
+    private let moviesListViewModel = MovieListViewModel(librairyAPI: LibraryAPI.shared)
     private var movies = [MovieProtocol]()
     private var error:String?
     

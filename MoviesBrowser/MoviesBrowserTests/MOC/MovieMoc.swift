@@ -34,4 +34,7 @@ struct  MovieMoc:MovieProtocol {
     
     var recommendedIDs: Array<Int16>?
     
+    var recommendedMovies:[MovieMoc]
+    
+    
 }
