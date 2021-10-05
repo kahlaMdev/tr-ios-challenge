@@ -26,7 +26,7 @@ class MovieDetailViewController: UIViewController {
     // View Model
     private var moviesDetailViewModel:MovieDetailModelView?
     
-    public func setMovie(_ aMovie: Movie) {
+    public func setMovie(_ aMovie: MovieProtocol) {
         self.moviesDetailViewModel = MovieDetailModelView(aMovie: aMovie, labrairyAPI: LibraryAPI.shared)
     }
     
@@ -34,28 +34,40 @@ class MovieDetailViewController: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        self.moviesDetailViewModel?.movie.bind {  [weak self] (updatedMovie) in
-            
+        
+        self.moviesDetailViewModel?.movieName.bind {  [weak self] (name) in
             guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.updateUIOnMainThread(forMovie: updatedMovie)
-            }
+            self.movieName.text = name
+        }
+
+        self.moviesDetailViewModel?.description.bind {  [weak self] (description) in
+            guard let self = self else { return }
+            self.descriptionLabel.text = description
+        }
+
+        self.moviesDetailViewModel?.plot.bind {  [weak self] (plot) in
+            guard let self = self else { return }
+            self.plotLabel.text = plot
+        }
+
+        self.moviesDetailViewModel?.releaseDate.bind {  [weak self] (releaseDateText) in
+            guard let self = self else { return }
+            self.releaseDateLabel.text = releaseDateText
+        }
+        
+        self.moviesDetailViewModel?.movie.bind {  [weak self] (movie) in
+            guard let self = self else { return }
+                self.updateUIOnMainThread(forMovie: movie)
         }
         
         self.moviesDetailViewModel?.getMovieDetail()
     }
     
-    private func updateUIOnMainThread(forMovie: Movie){
+    private func updateUIOnMainThread(forMovie: MovieProtocol){
         self.title = forMovie.name
         self.setImage(forMovie.pictureImage)
-        movieName.text = forMovie.name
-        releaseDateLabel.text = "Release date : " + forMovie.releaseDateFormatted
-        
-        descriptionLabel.text = forMovie.descript
-        plotLabel.text = forMovie.plot
-        
-        self.movieDetailScrolView.scrollToTop(animated: true)
-        
+
+//        self.movieDetailScrolView.scrollToTop(animated: true)
     }
     
     private func setImage(_ image: UIImage?) {

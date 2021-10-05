@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 extension UIImage {
-    static func downloadImage(_ url: String) -> (data: Data? , image: UIImage?) {
+    public static func downloadImage(_ url: String) -> (data: Data? , image: UIImage?) {
         let aUrl = URL(string: url)
         guard let data = try? Data(contentsOf: aUrl!),
               let image = UIImage(data: data) else {

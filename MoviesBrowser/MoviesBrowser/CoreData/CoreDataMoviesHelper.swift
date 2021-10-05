@@ -17,6 +17,7 @@ public protocol CoreDataMovieServiceProtocol {
     func deleteAllMovies()
     func fetchMoviesFromStorage() -> [Movie]?
     func fetchMovieFromStorage(id: Int16) -> Movie?
+    func fetchMoviesFromStorage(forIds: [Int16]) -> [Movie]
     func updateDataBaseWithMoviesList(movies: MoviesList)
     func updateDataBaseWithMovieModel(movie: MovieModel)
     func updateDataBaseWithMovieDetail(movieDetail: MovieDetail)
@@ -142,6 +143,19 @@ final class CoreDataMoviesHelper: CoreDataMovieServiceProtocol {
         }
     }
     
+    public func fetchMoviesFromStorage(forIds: [Int16]) -> [Movie] {
+        
+        var movies = [Movie]()
+        for movieId in forIds {
+            
+            if let recommendedMovie = CoreDataMoviesHelper.shared.fetchMovieFromStorage(id: movieId) {
+                movies.append(recommendedMovie)
+            }
+        }
+        
+        return movies
+    }
+    
     public func deleteAllMovies() {
         let managedObjectContext = persistentContainer.viewContext
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: Movie.entityName)
@@ -213,15 +227,16 @@ final class CoreDataMoviesHelper: CoreDataMovieServiceProtocol {
         // Very Important to be SYNC as we want to be sure the CoreData has been update "before" returning Success!
         DispatchQueue.main.sync {
             if let movie = CoreDataMoviesHelper.shared.fetchMovieFromStorage(id: id) {
-                //1- remove (empty) any previous recommanded Movies relationship
-                movie.removeFromRecommendedMovies(movie.recommendedMovies)
-                // 2- add received recommanded movies
+                //1- remove (empty) any previous recommanded Movies
+                movie.recommendedIDs?.removeAll()
+//               // 2- add received recommanded movies
+                var moviesIds = [Int16]()
                 for movieModel in recommendedMovies.movies {
-                    if let myRecommendedMovie = CoreDataMoviesHelper.shared.fetchMovieFromStorage(id: movieModel.identifier) {
-                        
-                        movie.addToRecommendedMovies(myRecommendedMovie)
-                    }
+                    
+                    moviesIds.append(movieModel.identifier)
                 }
+                
+                movie.recommendedIDs = moviesIds
                 
                 self.saveContext()
             }

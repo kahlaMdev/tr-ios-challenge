@@ -18,7 +18,10 @@ class MovieListViewController: UIViewController,
     
     // View Model
     private let moviesListViewModel = MovieListViewModel(labrairyAPI: LibraryAPI.shared)
-    private var movies = [Movie]()
+    private var movies = [MovieProtocol]()
+    private var error:String?
+    
+    var isPresentingErrorAlert = false
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?)   {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -32,7 +35,9 @@ class MovieListViewController: UIViewController,
     
     private func initializor(){
         //1- This will guaranty that the last downloaded data will be be displayed
-        self.moviesListViewModel.getStoredMovies()
+        //2- We cannot YET use Data Binding from ViewModel as it will be ready at When
+        // The View/UI will be loaded
+        self.movies = self.moviesListViewModel.getStoredMovies()
     }
 
     override func viewDidLoad() {
@@ -46,7 +51,14 @@ class MovieListViewController: UIViewController,
         moviesTableView.estimatedRowHeight = 120.0
         moviesTableView.rowHeight = UITableView.automaticDimension
         
-        self.moviesListViewModel.movies.bind { [weak self] (movies : [Movie]) in
+        self.moviesListViewModel.error.bind { [weak self] (error) in
+            guard let self = self else { return }
+            
+            self.error = error
+            self.showError()
+        }
+        
+        self.moviesListViewModel.movies.bind { [weak self] (movies : [MovieProtocol]) in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.movies = movies
@@ -54,8 +66,37 @@ class MovieListViewController: UIViewController,
             }
         }
         
-        //2- Lets do a new reuest to get the last up to date Data from API! 
+        //3- Lets do a new reuest to get the last up to date Data from API!
+        // The movies array will now gets updated throught Binding Box from
+        // The ViewModel
         self.moviesListViewModel.getMoviesList()
+    }
+    
+    private func showError(){
+        
+        DispatchQueue.main.async {
+
+            guard let myErrorMsg = self.error
+                  , self.isPresentingErrorAlert == false
+            else {
+                return
+            }
+            
+            self.isPresentingErrorAlert = true
+            
+            let alert = UIAlertController(title: nil,
+                                          message: myErrorMsg,
+                                          preferredStyle: UIAlertController.Style.alert)
+            
+            let dismiss = UIAlertAction(title: "dismiss", style: .default) { (action: UIAlertAction) in
+                self.error = nil
+                alert.dismiss(animated: true, completion: nil)
+            }
+            
+            alert.addAction(dismiss)
+            
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     // MARK: - Navigation

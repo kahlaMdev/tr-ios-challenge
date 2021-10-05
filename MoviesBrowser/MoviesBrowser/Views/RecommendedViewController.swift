@@ -19,12 +19,12 @@ class RecommendedViewController: UIViewController
 
     @IBOutlet weak var recommendedCollectionView: UICollectionView!
     
-    private var recommendedMovies = [Movie]()
+    private var recommendedMovies = [MovieProtocol]()
     
     // View Model
     private var recommendedViewModel: RecommendedViewModel?
     
-    public func setMovie(_ aMovie: Movie) {
+    public func setMovie(_ aMovie: MovieProtocol) {
         self.recommendedViewModel = RecommendedViewModel(aMovie: aMovie, labrairyAPI: LibraryAPI.shared)
     }
 
@@ -42,6 +42,10 @@ class RecommendedViewController: UIViewController
             }
         }
         
+        //1- get stored Recommend to load in the UI
+        self.recommendedMovies = self.recommendedViewModel?.getStoredRecommended() ?? []
+        
+        //2- request recommend update
         self.recommendedViewModel?.getRecommended()
     }
 

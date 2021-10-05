@@ -8,18 +8,6 @@
 import Foundation
 import UIKit
 
-protocol DataMovieSourceManagerProtocol {
-    init(sharedCoreDataHelper:CoreDataMovieServiceProtocol)
-    func parseMovieList(data: Data?) -> DataProcessingState
-    func parseMovieDetails(data: Data?) -> DataProcessingState
-    func parseMovieRecommended(data: Data?, movieId: Int16) -> DataProcessingState
-}
-
-enum DataProcessingState {
-    case fail
-    case success
-}
-
 // A Singleton class to manage data
 final class DataSourceManager: DataMovieSourceManagerProtocol {
     

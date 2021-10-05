@@ -8,13 +8,6 @@
 import Foundation
 import UIKit
 
-public enum DownloadError {
-    case noError
-    case invalidResponse
-    case missingData
-    case requestError
-}
-
 // A  HTTP client to handle remote communications
 class HTTPClient {
     
@@ -27,7 +20,7 @@ class HTTPClient {
         
         if let url = URL(string: urlString) {
             let urlRequest = URLRequest(url: url,
-                                        cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, // cache policy Ignores Local and remote cache!
+                                        cachePolicy: .reloadRevalidatingCacheData, // cache policy to reload Data when not valid!
                                         timeoutInterval: CONSTACTS.DATA_DOWNLOAD_CONNECTION_TIMEOUT_DURATION) // Timeout after!
             
             //Networking request
