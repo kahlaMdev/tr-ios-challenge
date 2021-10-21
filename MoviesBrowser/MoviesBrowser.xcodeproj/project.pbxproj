@@ -335,8 +335,8 @@
 			isa = PBXGroup;
 			children = (
 				4595946F270973F800DD0E06 /* UIImageExtension.swift */,
-				4595949027099A1800DD0E06 /* DateExtension.swift */,
 				451BCC43270A4535009DE955 /* UIScrollViewExtension.swift */,
+				4595949027099A1800DD0E06 /* DateExtension.swift */,
 			);
 			path = Extentions;
 			sourceTree = "<group>";
